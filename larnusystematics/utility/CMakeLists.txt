@@ -6,6 +6,8 @@ art_make_library(
     nusimdata::SimulationBase
     nugen::EventGeneratorBase_GENIE
     fhiclcpp::fhiclcpp
+    fhiclcppsimple::includes
+    ${GENIE_LIB_LIST}
 )
 
 install_headers()
