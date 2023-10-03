@@ -1,0 +1,28 @@
+<lcgdict>
+
+  <class name="larnusyst::evwgh::EventWeightMap"/>
+  <class name="art::Wrapper<larnusyst::evwgh::EventWeightMap>"/>
+  <class name="std::vector<larnusyst::evwgh::EventWeightMap>"/>
+  <class name="art::Wrapper<std::vector<larnusyst::evwgh::EventWeightMap> >"/>
+
+  <class name="larnusyst::evwgh::EventWeightParameter"/>
+  <class name="art::Wrapper<larnusyst::evwgh::EventWeightParameter>"/>
+  <class name="std::vector<larnusyst::evwgh::EventWeightParameter>"/>
+  <class name="art::Wrapper<std::vector<larnusyst::evwgh::EventWeightParameter>>"/>
+
+  <class name="larnusyst::evwgh::EventWeightParameterSet"/>
+  <class name="art::Wrapper<larnusyst::evwgh::EventWeightParameterSet>"/>
+  <class name="vector<larnusyst::evwgh::EventWeightParameterSet>"/>
+  <class name="art::Wrapper<vector<larnusyst::evwgh::EventWeightParameterSet> >"/>
+  <enum name="larnusyst::evwgh::EventWeightParameterSet::ReweightType"/>
+  <enum name="art::Wrapper<larnusyst::evwgh::EventWeightParameterSet::ReweightType>"/>
+
+  <class name="art::Assns<simb::MCTruth,larnusyst::evwgh::EventWeightParameterSet,void>"/>
+  <class name="art::Wrapper<art::Assns<simb::MCTruth,larnusyst::evwgh::EventWeightParameterSet,void> >"/>
+  <class name="art::Assns<map<string,vector<double> >,simb::MCTruth,void>"/>
+  <class name="art::Assns<simb::MCTruth,map<string,vector<double> >,void>"/>
+  <class name="art::Wrapper<art::Assns<map<string,vector<double> >,simb::MCTruth,void> >"/>
+  <class name="art::Wrapper<art::Assns<simb::MCTruth,map<string,vector<double> >,void> >"/>
+
+</lcgdict>
+
