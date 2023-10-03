@@ -24,6 +24,7 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
 
 cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
 
+find_package(canvas_root_io REQUIRED EXPORT)
 find_package(GSL REQUIRED)
 find_package(art REQUIRED EXPORT)
 find_package(art_root_io REQUIRED EXPORT)
@@ -39,10 +40,10 @@ find_package(Pythia6 REQUIRED)
 find_package(GENIE REQUIRED EXPORT)
 
 # macros for dictionary and simple_plugin
-include(ArtDictionary)
-include(ArtMake)
-include(BuildPlugins)
 
+include(CetMake)
+include(ArtDictionary)
+include(BasicPlugin)
 
 # ADD SOURCE CODE SUBDIRECTORIES HERE
 add_subdirectory(larnusystematics)

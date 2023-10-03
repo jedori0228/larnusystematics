@@ -1,0 +1,18 @@
+#include "test_larnusyst_paramHeader.GENIE.AR23_20i.fcl"
+
+BEGIN_PROLOG
+
+larnusyst_nusysteventweight_test: {
+
+  module_type: NuSystEventWeight
+
+  GeneratorModuleLabel: "generator"
+  AllowMissingTruth: false
+  DebugMode: false
+
+  ## systool
+  generated_systematic_provider_configuration: @local::generated_systematic_provider_configuration
+
+}
+
+END_PROLOG
