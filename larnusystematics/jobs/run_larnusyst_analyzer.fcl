@@ -1,0 +1,21 @@
+#include "larnusyst.paramHeader.GENIE.AR23_20i.default.fcl"
+
+physics: {
+   end_paths: [
+      "analysis"
+   ]
+   analyzers: {
+      NuSystEventWeightAnalyzerModule: {
+
+         module_type: NuSystEventWeightAnalyzer
+
+         GeneratorLabel : "generator"
+         WeightLabel: "LarNuSystEventWeightProducerModule"
+
+      }
+   }
+   analysis: [
+     NuSystEventWeightAnalyzerModule
+   ]
+}
+process_name: "NuSystEventWeightAnalyzerModule"

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-// Class: NuSystEventWeight
+// Class: NuSystEventWeightProducer
 // Module Type: producer
-// File: NuSystEventWeight_module.cc
+// File: NuSystEventWeightProducer_module.cc
 //
 // Initiated by Jaesung Kim (jae.sung.kim.3426@gmail.com)
 //
@@ -39,14 +39,14 @@
 
 namespace larnusyst::evwgh {
 
-class NuSystEventWeight : public art::EDProducer {
+class NuSystEventWeightProducer : public art::EDProducer {
 public:
-  explicit NuSystEventWeight(fhicl::ParameterSet const& p);
+  explicit NuSystEventWeightProducer(fhicl::ParameterSet const& p);
 
-  NuSystEventWeight(NuSystEventWeight const &) = delete;
-  NuSystEventWeight(NuSystEventWeight &&) = delete;
-  NuSystEventWeight& operator = (NuSystEventWeight const&) = delete;
-  NuSystEventWeight& operator = (NuSystEventWeight&&) = delete;
+  NuSystEventWeightProducer(NuSystEventWeightProducer const &) = delete;
+  NuSystEventWeightProducer(NuSystEventWeightProducer &&) = delete;
+  NuSystEventWeightProducer& operator = (NuSystEventWeightProducer const&) = delete;
+  NuSystEventWeightProducer& operator = (NuSystEventWeightProducer&&) = delete;
 
 private:
   void produce(art::Event& e) override;
@@ -62,7 +62,7 @@ private:
 };
 
 
-NuSystEventWeight::NuSystEventWeight(fhicl::ParameterSet const& p)
+NuSystEventWeightProducer::NuSystEventWeightProducer(fhicl::ParameterSet const& p)
   : EDProducer{p}
 {
 
@@ -85,7 +85,7 @@ NuSystEventWeight::NuSystEventWeight(fhicl::ParameterSet const& p)
 }
 
 
-void NuSystEventWeight::produce(art::Event& e) {
+void NuSystEventWeightProducer::produce(art::Event& e) {
 
   auto mcwghvec = std::make_unique<std::vector<larnusyst::evwgh::EventWeightMap> >();
   auto wghassns = std::make_unique<art::Assns<simb::MCTruth, larnusyst::evwgh::EventWeightMap> >();
@@ -105,8 +105,8 @@ void NuSystEventWeight::produce(art::Event& e) {
     art::fill_ptr_vector(mclist, mcTruthHandle);
 
     if(fDebugMode){
-      std::cout << "[NuSystEventWeight::produce] mclist.size() = " << mclist.size() << "\n"
-                << "[NuSystEventWeight::produce] fParamHeaderHelper.GetSystProvider().size() = " << fParamHeaderHelper.GetSystProvider().size() << std::endl;
+      std::cout << "[NuSystEventWeightProducer::produce] mclist.size() = " << mclist.size() << "\n"
+                << "[NuSystEventWeightProducer::produce] fParamHeaderHelper.GetSystProvider().size() = " << fParamHeaderHelper.GetSystProvider().size() << std::endl;
     }
 
     for( auto &sp : fParamHeaderHelper.GetSystProvider() ){
@@ -114,7 +114,7 @@ void NuSystEventWeight::produce(art::Event& e) {
       std::unique_ptr<systtools::EventResponse> syst_resp = sp->GetEventResponses(gheps);
 
       if( !syst_resp ){
-        throw cet::exception{ "NuSystEventWeight" }
+        throw cet::exception{ "NuSystEventWeightProducer" }
           << "Got nullptr systtools::EventResponse from provider "
           << sp->GetFullyQualifiedName() << "\n";
       }
@@ -122,21 +122,21 @@ void NuSystEventWeight::produce(art::Event& e) {
       // syst_resp->size() is (Number of MCTruth)
       // Each index corresponds to each of MCTruth
       int nMCTruthIndex = 0;
-      if(fDebugMode) std::cout << "[NuSystEventWeight::produce]   syst_resp.size() (= Number of MCTruth) of this SystProvider = " << syst_resp->size() << std::endl;
+      if(fDebugMode) std::cout << "[NuSystEventWeightProducer::produce]   syst_resp.size() (= Number of MCTruth) of this SystProvider = " << syst_resp->size() << std::endl;
 
       // Looping over syst_resp is identical to looping over MCTruth
       for(systtools::event_unit_response_t const& resp: *syst_resp) {
         // resp.size() corresponds to number of knobs we altered;
         // e.g., MaCCQE, MaCCRES, MvCCRE -> resp.size() = 3
         if(fDebugMode){
-          std::cout << "[NuSystEventWeight::produce]     sp->GetSystMetaData().size() (expected) = " << sp->GetSystMetaData().size() << "\n"
-                    << "[NuSystEventWeight::produce]     resp.size() of this syst_resp (produced) = " << resp.size() << std::endl;
+          std::cout << "[NuSystEventWeightProducer::produce]     sp->GetSystMetaData().size() (expected) = " << sp->GetSystMetaData().size() << "\n"
+                    << "[NuSystEventWeightProducer::produce]     resp.size() of this syst_resp (produced) = " << resp.size() << std::endl;
         }
 
         // Below check is not valid if there is a dependent dial
         /*
         if(sp->GetSystMetaData().size()!=resp.size()){
-          throw cet::exception{ "NuSystEventWeight" } 
+          throw cet::exception{ "NuSystEventWeightProducer" } 
             << "sp->GetFullyQualifiedName() = " << sp->GetFullyQualifiedName() << "\n"
             << "We expect to have " << sp->GetSystMetaData().size() << " knobs for this SystProvider, but "
                     << resp.size() << " are produced. "
@@ -155,20 +155,20 @@ void NuSystEventWeight::produce(art::Event& e) {
           if(sph.isResponselessParam) continue;
 
           if(fDebugMode){
-            std::cout << "[NuSystEventWeight::produce]       pid of this resp = " << r.pid << "\n"
-                      << "[NuSystEventWeight::produce]       prettyName of this resp = " << prettyName << "\n"
-                      << "[NuSystEventWeight::produce]       paramVariations.size() of this resp (expected) = " << sph.paramVariations.size() << "\n"
-                      << "[NuSystEventWeight::produce]       responses.size() of this resp (produced) = " << r.responses.size() << std::endl;
+            std::cout << "[NuSystEventWeightProducer::produce]       pid of this resp = " << r.pid << "\n"
+                      << "[NuSystEventWeightProducer::produce]       prettyName of this resp = " << prettyName << "\n"
+                      << "[NuSystEventWeightProducer::produce]       paramVariations.size() of this resp (expected) = " << sph.paramVariations.size() << "\n"
+                      << "[NuSystEventWeightProducer::produce]       responses.size() of this resp (produced) = " << r.responses.size() << std::endl;
           }
 
           if(sph.isCorrection && (r.responses.size()!=1)){
-            throw cet::exception{ "NuSystEventWeight" }
+            throw cet::exception{ "NuSystEventWeightProducer" }
               << "prettyName of this resp = " << prettyName << "\n"
               << "We expect to have 1 universes as it is a correction, but "
                       << r.responses.size() << " are produced\n";
           }
           if(!sph.isCorrection && sph.paramVariations.size()!=r.responses.size()){
-            throw cet::exception{ "NuSystEventWeight" }
+            throw cet::exception{ "NuSystEventWeightProducer" }
               << "prettyName of this resp = " << prettyName << "\n"
               << "We expect to have " << sph.paramVariations.size() << " universes, but "
                       << r.responses.size() << " are produced. "
@@ -199,7 +199,7 @@ void NuSystEventWeight::produce(art::Event& e) {
 }
 
 
-void NuSystEventWeight::beginRun(art::Run& run) {
+void NuSystEventWeightProducer::beginRun(art::Run& run) {
 
   auto p = std::make_unique<std::vector<larnusyst::evwgh::EventWeightParameterSet> >();
   for( auto &sp : fParamHeaderHelper.GetSystProvider() ) {
@@ -246,7 +246,7 @@ void NuSystEventWeight::beginRun(art::Run& run) {
       }
 
       larnusyst::evwgh::EventWeightParameterSet fParameterSet;
-      EventWeightParameterSet::ReweightType rwmode = EventWeightParameterSet::kDefault;
+      EventWeightParameterSet::ReweightType rwmode = EventWeightParameterSet::kDefaultRWType;
       std::vector<double> paramVars = sph.isCorrection ? std::vector<double>(1, sph.centralParamValue) : sph.paramVariations;
 
       auto it = map_resp_to_respless.find( sph.systParamId );
@@ -257,10 +257,10 @@ void NuSystEventWeight::beginRun(art::Run& run) {
           const auto& sph_dep = systtools::GetParam(smd, depdialid);
           std::vector<double> paramVars_dep = sph_dep.isCorrection ? std::vector<double>(1, sph_dep.centralParamValue) : sph_dep.paramVariations;
 
-          if(rwmode==EventWeightParameterSet::kDefault) rwmode = sph_dep.isRandomlyThrown ? EventWeightParameterSet::kMultisim : EventWeightParameterSet::kMultisigma;
+          if(rwmode==EventWeightParameterSet::kDefaultRWType) rwmode = sph_dep.isRandomlyThrown ? EventWeightParameterSet::kMultisim : EventWeightParameterSet::kMultisigma;
           else{
             if(rwmode!=(sph_dep.isRandomlyThrown ? EventWeightParameterSet::kMultisim : EventWeightParameterSet::kMultisigma)){
-              throw cet::exception{ "NuSystEventWeight" }
+              throw cet::exception{ "NuSystEventWeightProducer" }
                 << sph.prettyName << " depends on other dials, but the rwmode are different between the deps dials\n";
             }
           }
@@ -282,8 +282,8 @@ void NuSystEventWeight::beginRun(art::Run& run) {
 
       }
 
-      if(rwmode==EventWeightParameterSet::kDefault){
-        throw cet::exception{ "NuSystEventWeight" }
+      if(rwmode==EventWeightParameterSet::kDefaultRWType){
+        throw cet::exception{ "NuSystEventWeightProducer" }
           << "rwmode not set for " << sph.prettyName << "\n";
       }
 
@@ -306,4 +306,4 @@ void NuSystEventWeight::beginRun(art::Run& run) {
 
 }  // namespace larnusyst::evwgh
 
-DEFINE_ART_MODULE(larnusyst::evwgh::NuSystEventWeight)
+DEFINE_ART_MODULE(larnusyst::evwgh::NuSystEventWeightProducer)

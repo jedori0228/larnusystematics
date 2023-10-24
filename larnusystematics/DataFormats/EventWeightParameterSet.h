@@ -1,6 +1,7 @@
 #ifndef _LARNUSYST_EVENTWEIGHTPARAMETERSET_H_
 #define _LARNUSYST_EVENTWEIGHTPARAMETERSET_H_
 
+#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
@@ -43,11 +44,9 @@ public:
 
   typedef enum rwtype
   {
-    kDefault = -1,
+    kDefaultRWType = -1,
     kMultisim = 0,
-    kPMNSigma = 1,
-    kFixed = 2,
-    kMultisigma = 3,
+    kMultisigma = 1,
   } ReweightType;
 
   EventWeightParameterSet(){}
@@ -68,6 +67,19 @@ public:
             lhs.fNuniverses == rhs.fNuniverses &&
             lhs.fEVParameters == rhs.fEVParameters);
 
+  }
+
+  // Overload the << operator for your class
+  friend std::ostream& operator<<(std::ostream& os, const EventWeightParameterSet& p) {
+    os << "ParameterSet" << "\n" << "- Name: " << p.fName << "\n" << "- RWType: " << p.fRWType << std::endl;
+    os << "- Parameters:" << std::endl;
+    for(const auto& it: p.fEVParameters){
+      os << "  - Name: " << it.fName << "\n" << "    - CV: " << it.fCentralValue << std::endl;
+      os << "    - Variations: ";
+      for(double v: it.fParamVariations) os << " " << v;
+      os << std::endl;
+    }
+    return os;
   }
 
   void AddParameter(std::string name, double cv, std::vector<double> vals);
